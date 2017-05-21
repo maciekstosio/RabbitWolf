@@ -41,13 +41,16 @@ class Game extends JFrame{
 
     private void runThreads(){
         rabbits = new ArrayList<>();
-        for(int i = 0; i<r; i++){
-            rabbits.add(new Rabbit(getRand(0,width),getRand(0,height),i));
-            rabbits.get(i).start();
-        }
-
         wolf = new Wolf(getRand(0,width),getRand(0,height));
+
+        for(int i = 0; i<r; i++) rabbits.add(new Rabbit(getRand(0,width),getRand(0,height),i));
+
+        //Debug
+        for(Rabbit r: rabbits) System.out.println(r.getX()+","+r.getY());
+        canvas.repaint();
+
         wolf.start();
+        for(Rabbit r: rabbits) r.start();
     }
 
     public static int getRand(double from, double to){
