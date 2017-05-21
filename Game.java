@@ -7,21 +7,23 @@ class Game extends JFrame{
     public static JPanel canvas;
     public static int width;
     public static int height;
-    public static int tw=30;
-    public static int th=30;
+    public static int tw=20;
+    public static int th=20;
     public static int r;
     public static int k;
     public static Random rand;
     public static ArrayList<Rabbit> rabbits;
     public static Wolf wolf;
-    public static Object lock;
+    public static Object lock = new Object();
 
-    Game(int n, int m, int k, int r) {
+    Game(int n, int m, int tw, int th, int k, int r) {
         super("RabbitWolf");
 
         rand = new Random();
         this.width = n;
         this.height = m;
+        this.tw=tw;
+        this.th=th;
         this.r = r;
         this.k = k;
 
@@ -44,10 +46,6 @@ class Game extends JFrame{
         wolf = new Wolf(getRand(0,width),getRand(0,height));
 
         for(int i = 0; i<r; i++) rabbits.add(new Rabbit(getRand(0,width),getRand(0,height),i));
-
-        //Debug
-        for(Rabbit r: rabbits) System.out.println(r.getX()+","+r.getY());
-        canvas.repaint();
 
         wolf.start();
         for(Rabbit r: rabbits) r.start();

@@ -4,6 +4,7 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
@@ -11,6 +12,7 @@ class Canvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        int alive = 0;
 
         Graphics2D g2d = (Graphics2D) g;
 
@@ -21,7 +23,8 @@ class Canvas extends JPanel {
         }
 
         for(Rabbit r: Game.rabbits){
-            if(r.isAlive()){
+            if(!r.isDead()){
+                alive++;
                 g2d.setPaint(new Color(90, 40, 40));
                 g2d.fill(new Ellipse2D.Double(r.getX()*Game.tw, r.getY()*Game.th, Game.tw, Game.th));
             }
@@ -29,5 +32,11 @@ class Canvas extends JPanel {
 
         g2d.setPaint(new Color(100, 100, 100));
         g2d.fill(new Ellipse2D.Double(Game.wolf.getX()*Game.tw, Game.wolf.getY()*Game.th, Game.tw, Game.th));
+
+
+
+        if(alive<1){
+            RabbitWolf.window.dispatchEvent(new WindowEvent(RabbitWolf.window, WindowEvent.WINDOW_CLOSING));
+        }
     }
 }

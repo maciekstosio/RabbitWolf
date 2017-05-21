@@ -7,6 +7,8 @@ import java.awt.Point;
 
 public abstract class Animal extends Thread{
     protected boolean dead = false;
+    protected boolean rest = false;
+    protected int restCycles = 0;
     protected int id;
     protected int x;
     protected int y;
@@ -20,9 +22,18 @@ public abstract class Animal extends Thread{
     public void run() {
         try {
             while(!isDead()){
-                move();
-                System.out.println(id+":"+x+","+y);
-                Game.canvas.repaint();
+                if(!rest) {
+                    move();
+                    System.out.println(id + ":" + x + "," + y);
+                    Game.canvas.repaint();
+                }else{
+                    if(restCycles>4){
+                        rest=false;
+                        restCycles=0;
+                    }else{
+                        restCycles++;
+                    }
+                }
                 Thread.sleep(Game.getRand(0.5*Game.k,1.5*Game.k));
             }
         } catch (InterruptedException e) {
@@ -40,6 +51,10 @@ public abstract class Animal extends Thread{
 
     public int getY(){
         return y;
+    }
+
+    public int getID(){
+        return id;
     }
 
     public void kill(){
